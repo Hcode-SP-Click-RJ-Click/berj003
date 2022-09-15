@@ -5,10 +5,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { PlacesModule } from './places/places.module';
 
 @Module({
-  imports: [
-    PlacesModule,
-    CategoriesModule
-  ],
+  imports: [PlacesModule, CategoriesModule],
   controllers: [AppController],
   providers: [AppService],
 })
