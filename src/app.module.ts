@@ -6,10 +6,7 @@ import { PlacesModule } from './places/places.module';
 import { PrismaService } from './prisma/prisma.service';
 
 @Module({
-  imports: [
-    PlacesModule,
-    CategoriesModule
-  ],
+  imports: [PlacesModule, CategoriesModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
