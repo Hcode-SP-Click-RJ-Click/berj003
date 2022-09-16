@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Param, Post, Body, Patch, Delete } from "@nestjs/common"
+import { Controller, Get, Param, Post, Body, Patch, Delete, ParseIntPipe } from "@nestjs/common"
 import { CategoriesService } from "./categories.service"
+import { CreateCategoryDto } from "./dto/create-category.dto"
+import { UpdateCategoryDto } from "./dto/update-category.dto"
 
 // http://localhost:3000/categories
 @Controller('categories')
@@ -25,21 +27,21 @@ export class CategoriesController {
     // http://localhost:3000/categories
     // POST
     @Post()
-    createCategory(@Body() body) {
+    createCategory(@Body() body: CreateCategoryDto) {
         return this.categoriesService.createCategory(body)
     }
 
     // http://localhost:3000/categories/:id
     // PACTH
     @Patch(":id")
-    updateCategory(@Param("id") id, @Body() body) {
+    updateCategory(@Param("id", ParseIntPipe) id: number, @Body() body: UpdateCategoryDto) {
         return this.categoriesService.updateCategory(id, body)
     }
 
     // http://localhost:3000/categories/:id
     // DELETE
     @Delete(":id")
-    removeCategory(@Param("id") id) {
+    removeCategory(@Param("id", ParseIntPipe) id: number) {
         return this.categoriesService.deleteCategory(id)
     }
     

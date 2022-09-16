@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common/decorators"
 import { PrismaService } from "src/prisma/prisma.service";
 import { BadRequestException, NotFoundException } from "@nestjs/common/exceptions";
+import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpdateCategoryDto } from "./dto/update-category.dto";
 
 @Injectable()
 export class CategoriesService {
@@ -29,24 +31,41 @@ export class CategoriesService {
         return category;
     }
 
-    createCategory(body) {
-        return {
-            message: "Categoria criada com sucessso!",
-            body
-        }
+    createCategory(body: CreateCategoryDto) {
+
+        return this.prisma.categories.create({
+            data: {
+                name: body.name,
+            },
+        });
         
     }
 
-    updateCategory(id, body) {
+    async updateCategory(id: number, body: UpdateCategoryDto) {
 
-        return {
-            message: `Categoria número ${id} atualizada com sucesso!`,
-            body 
-        }
+        await this.showCategories(id);
+
+        return this.prisma.categories.update({
+            data: {
+                name: body.name,
+            },
+            where: {
+                id: +id,
+            },
+        });
+
     }
 
-    deleteCategory(id) {
-        return `Categoria número ${id} deletada com sucesso.`
+    async deleteCategory(id: number) {
+
+        await this.showCategories(id);
+
+        return this.prisma.categories.delete({
+            where: {
+                id,
+            },
+        });
+
     }
 }
 
