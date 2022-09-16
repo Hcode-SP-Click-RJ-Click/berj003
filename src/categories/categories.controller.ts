@@ -18,7 +18,7 @@ export class CategoriesController {
     // http://localhost:3000/categories/:id
     // GET
     @Get(":id")
-    showCategory(@Param("id") id) {
+    showCategory(@Param("id") id: number) {
         return this.categoriesService.showCategories(id)
     }
 

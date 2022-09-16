@@ -1,15 +1,32 @@
-/* eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common/decorators"
+import { PrismaService } from "src/prisma/prisma.service";
+import { BadRequestException, NotFoundException } from "@nestjs/common/exceptions";
 
 @Injectable()
 export class CategoriesService {
 
+    constructor(private prisma: PrismaService) {}
+
     listCategories() {
-        return "Aqui estão todas as Categorias!"
+        return this.prisma.categories.findMany();
     }
 
-    showCategories(id) {
-        return `Essa é a categoria número: ${id}`
+    async showCategories(id: number) {
+        if (isNaN(Number(id))) {
+            throw new BadRequestException("ID inválido.");
+        }
+
+        const category = await this.prisma.categories.findUnique({
+            where: {
+                id: +id,
+            },
+        });
+
+        if (!category) {
+            throw new NotFoundException("Categoria não encontrada.");
+        }
+
+        return category;
     }
 
     createCategory(body) {
