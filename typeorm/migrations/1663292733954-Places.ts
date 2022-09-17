@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm"
+import { MigrationInterface, QueryRunner, Table, TableForeignKey } from "typeorm"
 
 export class Places1663292733954 implements MigrationInterface {
 
@@ -20,7 +20,7 @@ export class Places1663292733954 implements MigrationInterface {
             }, {
                 name: 'zipCode',
                 type: 'char',
-                length: '7',
+                length: '8',
                 isNullable: false,
             }, {
                 name: 'address',
@@ -43,11 +43,17 @@ export class Places1663292733954 implements MigrationInterface {
                 length: '50',
                 isNullable: false,
             }, {
-                name: 'category',
-                type: 'varchar',
-                length: '50',
+                name: 'categoryId',
+                type: 'int',
                 isNullable: false,
             }],
+        }));
+
+        await queryRunner.createForeignKey("places", new TableForeignKey({
+            columnNames: ['categoryId'],
+            referencedTableName: 'categories',
+            referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
         }));
     }
 
